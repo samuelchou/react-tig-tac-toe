@@ -12,14 +12,19 @@ function Square({ value, onHandleClick }) {
 
 export default function Board() {
   const [squares, setSquares] = useState(Array(9).fill(''));
+  const [xIsNext, setXIsNext] = useState(true);
 
   function onClickSquare(position) {
     if (squares.length <= position) return; // TODO: make warning?
-    if (squares[position] === '') {
-      const newValues = squares.slice();
-      newValues[position] = 'X'; // TODO: make it into different player
-      setSquares(newValues);
-    } 
+    if (squares[position]) return;
+    const newValues = squares.slice();
+    if (xIsNext) {
+      newValues[position] = 'X';
+    } else {
+      newValues[position] = 'O';
+    }
+    setSquares(newValues);
+    setXIsNext(!xIsNext);
   }
 
   return (
