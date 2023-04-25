@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { calculateWinner } from './game';
 
 function Square({ value, onHandleClick }) {
   return (
@@ -13,9 +14,10 @@ function Square({ value, onHandleClick }) {
 export default function Board() {
   const [squares, setSquares] = useState(Array(9).fill(''));
   const [xIsNext, setXIsNext] = useState(true);
+  const [winner, setWinner] = useState('');
 
   function onClickSquare(position) {
-    if (squares.length <= position) return; // TODO: make warning?
+    if (winner || squares.length <= position) return; // TODO: make warning?
     if (squares[position]) return;
     const newValues = squares.slice();
     if (xIsNext) {
@@ -25,6 +27,11 @@ export default function Board() {
     }
     setSquares(newValues);
     setXIsNext(!xIsNext);
+    const result = calculateWinner(newValues);
+    if (result) {
+      console.log("winner is " + result);
+      setWinner(result);
+    }
   }
 
   return (
@@ -44,6 +51,7 @@ export default function Board() {
         <Square value={squares[7]} onHandleClick={() => onClickSquare(7)} />
         <Square value={squares[8]} onHandleClick={() => onClickSquare(8)} />
       </div>
+      {winner && <p>{"Winner is " + winner}</p>}
     </div>
   );
 }
