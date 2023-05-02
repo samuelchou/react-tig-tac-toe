@@ -7,10 +7,13 @@ export default function App() {
     const [status, setStatus] = useState("Next Place: O");
     const [xIsNext, setXIsNext] = useState(false);
     const [history, setHistory] = useState([Array(9).fill(null)]);
-    const currentSquares = history[history.length - 1];
+    const [currentMove, setCurrentMove] = useState(0);
+    const currentSquares = history[currentMove];
 
     function updateSquares(updateSquares) {
-        setHistory([...history, updateSquares]);
+        const nextHistory = [...history.slice(0, currentMove + 1), updateSquares];
+        setHistory(nextHistory);
+        setCurrentMove(nextHistory.length - 1);
         setStatus("Next Move: " + (xIsNext ? "O" : "X"));
         setXIsNext(!xIsNext);
         const result = calculateWinner(updateSquares);
@@ -20,8 +23,11 @@ export default function App() {
         }
     }
     function jumpToHistoryMove(move) {
-        // TODO
         console.log("jump to move:", move);
+        setCurrentMove(move);
+        let xIsNext = move % 2 === 1;
+        setXIsNext(xIsNext);
+        setStatus("Next Move: " + (xIsNext ? "X" : "O"));
     }
 
     return (
