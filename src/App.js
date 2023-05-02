@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Board from "./board";
 import { calculateWinner } from "./game";
+import { MoveRecord } from "./MoveRecord";
 
 export default function App() {
     const [status, setStatus] = useState("Next Place: O");
@@ -18,15 +19,18 @@ export default function App() {
             setStatus("Winner is: " + result);
         }
     }
+    function jumpToHistoryMove(move) {
+        // TODO
+        console.log("jump to move:", move);
+    }
+
     return (
         <div className="game">
             <div className="game-board">
                 <Board xIsNext={xIsNext} squares={currentSquares} onUpdateSquares={updateSquares} />
                 <div className="status">{status}</div>
             </div>
-            <div className="game-info">
-                <ol>{/*TODO*/}</ol>
-            </div>
+            <MoveRecord history={history} handleJumpTo={jumpToHistoryMove} />
         </div>
     );
 }
