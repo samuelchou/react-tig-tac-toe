@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { calculateWinner } from './game';
 
 function Square({ value, onHandleClick }) {
@@ -11,11 +11,7 @@ function Square({ value, onHandleClick }) {
     </button>);
 }
 
-export default function Board() {
-  const [squares, setSquares] = useState(Array(9).fill(''));
-  const [xIsNext, setXIsNext] = useState(false);
-  const [status, setStatus] = useState("Next Place: O");
-
+export default function Board({ xIsNext, squares, onUpdateSquares }) {
   function onClickSquare(position) {
     if (calculateWinner(squares) || squares.length <= position) return; // TODO: make warning?
     if (squares[position]) return;
@@ -25,14 +21,7 @@ export default function Board() {
     } else {
       newValues[position] = 'O';
     }
-    setSquares(newValues);
-    setStatus("Next Move: " + (xIsNext ? "O" : "X"));
-    setXIsNext(!xIsNext);
-    const result = calculateWinner(newValues);
-    if (result) {
-      console.log("winner is " + result);
-      setStatus("Winner is: " + result);
-    }
+    onUpdateSquares(newValues);
   }
 
   return (
@@ -52,7 +41,6 @@ export default function Board() {
         <Square value={squares[7]} onHandleClick={() => onClickSquare(7)} />
         <Square value={squares[8]} onHandleClick={() => onClickSquare(8)} />
       </div>
-      <div className="status">{status}</div>
     </div>
   );
 }
