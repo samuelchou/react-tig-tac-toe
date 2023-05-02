@@ -7,13 +7,17 @@ export default function App() {
     const [status, setStatus] = useState("Next Place: O");
     const [xIsNext, setXIsNext] = useState(false);
     const [history, setHistory] = useState([Array(9).fill(null)]);
+    const [moveHistory, setMoveHistory] = useState([Array(2).fill(null)]);
     const [currentMove, setCurrentMove] = useState(0);
     const currentSquares = history[currentMove];
 
-    function updateSquares(updateSquares) {
+    function updateSquares(updateSquares, position) {
         const nextHistory = [...history.slice(0, currentMove + 1), updateSquares];
         setHistory(nextHistory);
-        setCurrentMove(nextHistory.length - 1);
+        const nextCurrentMove = nextHistory.length - 1;
+        setCurrentMove(nextCurrentMove);
+        const nextMoveHistory = [...moveHistory.slice(0, nextCurrentMove), [nextCurrentMove % 2 === 0 ? "X" : "O" ,position]];
+        setMoveHistory(nextMoveHistory);
         setStatus("Next Move: " + (xIsNext ? "O" : "X"));
         setXIsNext(!xIsNext);
         const result = calculateWinner(updateSquares);
@@ -36,7 +40,7 @@ export default function App() {
                 <Board xIsNext={xIsNext} squares={currentSquares} onUpdateSquares={updateSquares} />
                 <div className="status">{status}</div>
             </div>
-            <MoveRecord history={history} handleJumpTo={jumpToHistoryMove} />
+            <MoveRecord history={history} handleJumpTo={jumpToHistoryMove} moveHistory={moveHistory} />
         </div>
     );
 }

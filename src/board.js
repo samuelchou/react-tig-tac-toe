@@ -21,7 +21,7 @@ export default function Board({ xIsNext, squares, onUpdateSquares }) {
     } else {
       newValues[position] = 'O';
     }
-    onUpdateSquares(newValues);
+    onUpdateSquares(newValues, position);
   }
 
   return (

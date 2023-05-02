@@ -1,11 +1,11 @@
 import React from "react";
 
 
-export function MoveRecord({ history, handleJumpTo }) {
+export function MoveRecord({ history, moveHistory, handleJumpTo }) {
     const moves = history.map((squares, move) => {
         let description;
         if (move > 0) {
-            description = 'Go to move #' + move;
+            description = 'Go to move #' + move + ": " + moveHistory[move];
         } else {
             description = 'Go to game start';
         }
